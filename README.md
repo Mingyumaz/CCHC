@@ -2,36 +2,29 @@
 
 ## Exposé
 
-Tactile Internet requires stringent latency while the data rates vary drastically, 
-traditional approaches not fulfill the QoS and the bandwidth utilization requirement, 
-for example, In-band Network Telemetry (INT[1]) model can reduce the congestion of the network, 
-but haptic stream still not meet the latency demand.
+Tactile Internet requires stringent latency while the data rates vary drastically, traditional approaches not fulfill the QoS and the bandwidth utilization requirement, for example, Google Congestion Control (GCC)[1] can reduce the congestion of the network mainly for video streaming processing, but haptic stream still may not meet the latency demand. The algorithm CoDel[2] queue management setting latency limits for network packets in the buffer, overcome buffer bloat and improving the overall performance of the random early detection (RED[3]) algorithm. However, it lacks of competence to handle different data type flow flexibly, also difficult to meet different QoS requirements.
 
-Therefore, a dynamic and network-aware resource management strategy will be design with satisfying the QoS requirement while without wasting precious bandwidth. 
-Reference the methodological design in article[2], 
-by setting up virtual queues in the protocol independent switch architecture (PISA) network, 
-in which different priorities are provided for different traffic streams to meet the requirements of the network. 
-In anticipation, this method guarantees both high utilization by virtual queue and low latency by traffic priority.
-The task of this thesis is to design, implement and evaluate a specially configured PISA network, 
-which should meet the requirements of tactile internet. This includes the following aspects”
+Therefore, a dynamic and network-aware resource management strategy will be design with satisfying the QoS requirement while without wasting precious bandwidth. Reference the methodological design in article[4], by setting up virtual queues in the protocol independent switch architecture (PISA) network, in which different priorities are provided for different traffic streams to meet the requirements of the network. In anticipation, this method guarantees both high utilization by virtual queue and low latency by traffic priority.
+The task of this thesis is to design, implement and evaluate a specially configured PISA network, which should meet the requirements of tactile internet. The thesis will include the following aspects: 
 
+*	Review of state of the art algorithms and approaches.
+*	Sketching out the solution approach with virtual queue and different traffic priority.
+*	Implementation the approach in ns3 using bmv2 switch.
+*	Modify and adjust the implementation according to the simulation results.
+*	The model performance comparison to the CoDel model.
+*	Evaluation of the model.
+*	Summarization and overview.
 
-This includes the following aspects:
+This thesis is written in English. As for the timeline, I'm leaning towards three weeks for each of the above steps, with the rest of the time to complete the paper and presentation work.
 
-* Review of state of the art algorithms and approaches.
-* Sketching out the solution approach with virtual queue and different traffic priority.
-* Implementation the approach in ns3 using bmv2 switch.
-* Modify and adjust the implementation according to the simulation results.
-* The model performance comparison to the In-band Network Telemetry (INT) model.
-* Evaluation of the virtual queues model.
+[1] Carlucci G, De Cicco L, Holmer S, et al. Analysis and design of the google congestion control for web real-time communication (WebRTC)[C]//Proceedings of the 7th International Conference on Multimedia Systems. 2016: 1-12.
 
-This thesis is written in English. 
-As for the timeline, I'm leaning towards three weeks for each of the above steps, 
-with the rest of the time to complete the paper and presentation work.
+[2] Kundel R, Blendin J, Viernickel T, et al. P4-CoDel: Active queue management in programmable data planes[C]//2018 IEEE Conference on Network Function Virtualization and Software Defined Networks (NFV-SDN). IEEE, 2018: 1-4
 
+[3] Floyd S, Jacobson V. Random early detection gateways for congestion avoidance[J]. IEEE/ACM Transactions on networking, 1993, 1(4): 397-413.
 
-[1] Kim C, Sivaraman A, Katta N, et al. In-band network telemetry via programmable dataplanes[C]//ACM SIGCOMM. 2015, 15.
-[2] Lhamo O, Nguyen G T, Fitzek F H P. Virtual Queues for QoS Compliance of Haptic Data Streams in Teleoperation[J]. 2022.
+[4] Lhamo O, Nguyen G T, Fitzek F H P. Virtual Queues for QoS Compliance of Haptic Data Streams in Teleoperation[J]. 2022.
+
 
 ##  Some plans and ideas
 
@@ -71,7 +64,28 @@ For the related papers
 * [Github-NS4-P4Simulator](https://github.com/P4Simulator/P4Simulator)
 * [Github-PIFO-TM/ns3-bmv2](https://github.com/PIFO-TM/ns3-bmv2)
 
-## congestion control algorithm
+## traditional traffic control algorithm
+
+* **Random early detection(RED)**
+  * [1] Floyd S, Jacobson V. Random early detection gateways for congestion avoidance[J]. IEEE/ACM Transactions on networking, 1993, 1(4): 397-413.
+  * Congestion is detected by monitoring the average length of the router's waitting queue, and once congestion is detected as it approaches, connections are randomly selected to notify congestion so that they reduce the congestion window and slow down the speed of sending data before the queue overflows, so that avoid the network congestion. Since RED is based on the FIFO queue scheduling policy and only drops packets that are entering the router, it is also simpler to implement.
+  * Two main features: 
+    * 1. Instead of waiting for the queue to be full before dropping incoming packets, it uses a probabilistic determination mechanism to prevent possible congestion, then dropping packets before the predicted congestion;
+    * 2. It adjusts the packet drop probability by averaging queues length instead of immediate queues length, thus absorbing some of the transient burst traffic.
+
+* **priority based congestion control**
+  * [2] Wang C, Sohraby K, Lawrence V, et al. Priority-based congestion control in wireless sensor networks[C]//IEEE International Conference on Sensor Networks, Ubiquitous, and Trustworthy Computing (SUTC'06). IEEE, 2006, 1: 8 pp.
+  * [3] Zhou C, Wu W, Yang D, et al. Deadline and Priority-aware Congestion Control for Delay-sensitive Multimedia Streaming[C]//Proceedings of the 29th ACM International Conference on Multimedia. 2021: 4740-4744.
+    * [ACM MM2021](https://zhuanlan.zhihu.com/p/425904792)
+
+* **pfifo and bfifo**
+
+* **The CoDel queue management algorithm**
+  * [4] Kundel R, Blendin J, Viernickel T, et al. P4-CoDel: Active queue management in programmable data planes[C]//2018 IEEE Conference on Network Function Virtualization and Software Defined Networks (NFV-SDN). IEEE, 2018: 1-4.
+  * It aims to overcome buffer bloat in network hardware (e.g., routers) by setting latency limits for network packets in the buffer, improving the overall performance of the random early detection (RED) algorithm, addressing some of the misconceptions Jacobson held when developing RED, and designing CoDel to be more manageable and configurable than RED.
+
+## related works
+
 * Lhamo O, Nguyen G T, Fitzek F H P. Virtual Queues for QoS Compliance of Haptic Data Streams in Teleoperation[J]. 2022.
 
 * Kim C, Sivaraman A, Katta N, et al. In-band network telemetry via programmable dataplanes[C]//ACM SIGCOMM. 2015, 15.
