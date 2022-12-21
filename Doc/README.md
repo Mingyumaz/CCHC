@@ -20,4 +20,9 @@ Docs for project
 4. Try the examples in two method:
    1. `ns3-p4simulator` goes well
    2. `ns3-PIFO-TM` not
-   
+
+## week 51
+
+tasks:
+   1. finish the demo and test with some result and capture the data.
+   2. for example with `.pcap` file: plot the captured data.(this may using python or wireshark tools)
