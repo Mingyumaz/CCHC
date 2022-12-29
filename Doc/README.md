@@ -19,10 +19,15 @@ Docs for project
 
 4. Try the examples in two method:
    1. `ns3-p4simulator` goes well
-   2. `ns3-PIFO-TM` not
+   2. `ns3-PIFO-TM` goes well also (by 27.12.2022).
 
 ## week 51
 
 tasks:
    1. finish the demo and test with some result and capture the data.
    2. for example with `.pcap` file: plot the captured data.(this may using python or wireshark tools)
+   3. I have tryed the [PcapXray](https://github.com/Srinivas11789/PcapXray), but It cannot be analyzed normally because our package is *customized*, see result figure: "Doc\figures\pcap_xray_result.png"\
+   4. Therefore, we need to deal with the packages visualization by ourself.
+![Architecture of ns3-PIFO-TM](.\figures\pcap_xray_result.png)
+
+
