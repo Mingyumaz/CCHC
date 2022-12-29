@@ -1,0 +1,64 @@
+# `PIFO-TM/ns3-bmv2`: simple-p4-qdisc
+
+* @todo
+* @notsure
+
+## introduction for simple-p4-qdisc.cc
+
+This is the introduction for example `simple-p4-qdisc` in [`PIFO-TM/ns3-bmv2`](https://github.com/PIFO-TM/ns3-bmv2), which I have made some small changes to the original.
+Since the program doesn't have much of an introduction at the moment, I'm going to start by introducing it here.
+
+* src: [`simple-p4-qdisc`](https://github.com/Mingyumaz/ns-3-dev-git/blob/p4dev/src/traffic-control/examples/simple-p4-qdisc.cc)
+
+* Functional:
+
+The program reduces network congestion by randomly dropping packets on the switch. 
+The switch is controlled by the p4 program, which implements the probability of packet loss by relative queue length. The `UDP` flow will goes from n0 to n1.
+
+```
+ *  Network topology
+ * 
+ *     --------------
+ *     |  (router)  |
+ *     |            |
+ *     | [p4-qdisc] |
+ *     --------------
+ *      |         | 
+ *      n0        n1
+ *
+```
+* with p4 configuring: 
+
+P4 will control the switch's virtual queue, which corresponds to the setting of some relevant parameters.
+
+* Data tracing(Data is relatively small and difficult to draw @todo):
+  * the pkts length in Traffic Control device(virtual queue? @notsure) and switch channel device(real queue).
+  * time stamp.
+  * wheather the Traffic Control device or the switch drop the pkts.
+
+* Notes: In you root ns3 directory, these should be the Directory "./trace-data/" for saving the trace file "./trace-data/tc-qsize.txt", if not: these will be an error.
+
+## introduction for simple-p4-qdisc.p4
+
+* src: [simple-p4-qdisc.p4](https://github.com/Mingyumaz/ns-3-dev-git/blob/p4dev/src/traffic-control/examples/p4-src/simple-p4-qdisc/simple-p4-qdisc.p4)
+
+* Functional:
+
+Random early detection(RED) algorithm implementation with p4: Set random drop for pkts by calculating the `avg_qdepth` in switch.
+
+* build: build with Makefile.
+
+* Possible difficulties for redesign with p4:
+
+Typically, the use of p4 for configure requires the use of [`v1model.p4`](https://github.com/p4lang/p4c/blob/main/p4include/v1model.p4), which defines the generic switch model and some of its internal data formats, etc.
+Some of the usual examples of p4 switches can be viewed at [p4-tutorials](https://github.com/Mingyumaz/p4-tutorials/tree/master/exercises).
+
+But in this example `simple-p4-qdisc` uses a custom generic switch model: `simple_pipe.p4`, some of these data have been reprogrammed.
+where the data format defined in p4 is defined in the module `p4-pipeline` of ns3 correspondingly.
+This involves setting up and converting information in ns3 packages and p4 packages. 
+Therefore, a generic p4 program may not be fully applicable, at least for the current tests. This is also very unfortunate.
+So if we need new p4 function setting(@todo), for example add the queue ranking for different flow etc, the ns3 related module also need to make corresponding changes and setting.
+
+
+# `ns4` with `p4simulator`: 
+
