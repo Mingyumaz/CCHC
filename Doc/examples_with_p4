@@ -3,6 +3,9 @@
 * @todo
 * @notsure
 
+## Why choose the `PIFO-TM/ns3-bmv2`
+ 
+
 ## introduction for simple-p4-qdisc.cc
 
 This is the introduction for example `simple-p4-qdisc` in [`PIFO-TM/ns3-bmv2`](https://github.com/PIFO-TM/ns3-bmv2), which I have made some small changes to the original.
@@ -61,4 +64,32 @@ So if we need new p4 function setting(@todo), for example add the queue ranking 
 
 
 # `ns4` with `p4simulator`: 
+
+
+The simulator set a `p4 Model` class for set p4 parameters, we instantiate one `P4 Model` using a json file compiled from P4 file. 
+Also start the thrift to communicate with the controller.
+
+`P4Model` is initialized along with `P4 Device`, and expose a public function called `receivePacket()` to the `P4 Device`. 
+Whenever `P4 Device` has a packet needing handling, it call `receivePacket()` and wait for this function to return. 
+`receivePacket()` puts the packet through P4 pipeline.
+
+implemetation: ns3::packet --> bmv2::packet --> bmv2::process --> ns3::packet --> transport
+So `ns4` differs from `PIFO-TM/ns3-bmv2`, which does not save the metadata in the `ns3` program, so if you need to use the custom data in the header of the data, you need to set it yourself.
+
+## introduction for example: `p4-topo-test.cc`
+
+* src: [p4-topo-test.cc](https://github.com/Mingyumaz/NS3-p4simulator-module/blob/master/examples/p4-topo-test.cc)
+
+The basic ethernet, ipv4, udp, tcp and arp protocols are implemented using the p4 language, and setted in the switch in network. 
+In the examples, there is no processing for queues, etc.
+But with the old version of the p4.
+
+```
+Network topology
+
+ host   switch   switch  switch  switch  switch  host
+  h0 ---- s3 ---- s1 ---- s0 ---- s2 ---- s4 ---- h1
+
+Both flow table and p4 configuration
+```
 

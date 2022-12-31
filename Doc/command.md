@@ -21,7 +21,8 @@ sudo update-alternatives --config python
 ```
 
 
-### Problem: The python version 
+### Problem: The python version
+
 The package install with version python3.8 but not with python3.7, even in manual mode with python3.7.
 
 `sudo apt --reinstall install python3-tk`.
@@ -39,6 +40,23 @@ There are 3 choices for the alternative python (providing /usr/bin/python).
 
 Press <enter> to keep the current choice[*], or type selection number: 
 
+```
+
+And the python version switch will occer the error in `ns3`: the `./waf build` will call the python script and then `raise StopIteration`.
+
+Solution: taken from [Fix generators](https://discuss.ardupilot.org/t/waf-crashes-on-copter-3-6-5/48682/3)
+
+```
+1.1. in ardupilot/modules/waf/waflib/Node.py
+replace yield <object> (note that <object> is a placeholder for the object that is to be yielded) with
+
+ try:
+     yield <object>
+ except StopIteration:
+     return
+within Node.ant_iter method (ca. line 590).
+This occurs 3 times, 2 times with node as , 1 time with k as .
+Then replace raise StopIteration with return in the method’s last line.
 ```
 
 ## module for plot
