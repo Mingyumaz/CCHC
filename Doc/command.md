@@ -66,3 +66,35 @@ sudo apt-get install wireshark
 sudo apt-get install tshark
 
 ```
+
+## ns3
+
+```
+616 of 627 tests passed (616 passed, 10 skipped, 0 failed, 1 crashed, 0 valgrind errors)
+List of SKIPped tests:
+    examples/routing/simple-routing-ping6.py
+    examples/tutorial/first.py
+    examples/wireless/mixed-wired-wireless.py
+    examples/wireless/wifi-ap.py
+    ns3-tcp-cwnd
+    ns3-tcp-interoperability
+    nsc-tcp-loss
+    src/bridge/examples/csma-bridge.py
+    src/core/examples/sample-simulator.py
+    src/flow-monitor/examples/wifi-olsr-flowmon.py
+List of CRASHed tests:
+    pifo-tree-queue-disc
+
+
+
+./test.py --suite=pifo-tree-queue-disc
+```
+
+## gdb
+
+```
+set print pretty on
+p *(NetDevice *) 0x55555559ec20
+
+export NS_LOG='PifoQueueDisc=function'
+```

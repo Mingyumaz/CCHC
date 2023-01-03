@@ -1,10 +1,26 @@
-# `PIFO-TM/ns3-bmv2`: simple-p4-qdisc
+# examples with p4 and ns3
+
 
 * @todo
 * @notsure
 
-## Why choose the `PIFO-TM/ns3-bmv2`
- 
+# Why choose the `PIFO-TM/ns3-bmv2`
+
+* `ns4-p4simulator` 
+  * It is possible to send `ns3::packages` to `bmv2::packet` and convert back to `ns3`. Functionally its can be used as an simmulator for this project.
+  * All modules are in the p4simulator module. All functions are too integrated.
+  * There are tools dedicated to controlling the network topology.
+  * With p4 language version 14(old version), but this will not have a major impact.
+
+* `PIFO-TM/ns3-bmv2`
+  * Functionally its can be used as an simulator for this project.
+  * With better isolation, the module is divided into three modules, `p4-pipeline`, `traffic-control` and `network`.
+  * Have modules related to the project.
+    * The example `p4-queue-disc` ,which defines some functions on queue management, priority, etc., and has the structure data corresponding to the metatdata of p4 in ns3.
+    * It contains some mods and examples related to virtual queues, for example: `pifo-queue`, `pifo-fast-queue` etc(but not with p4).
+  * With p4 language version 16(Latest version).
+
+# PIFO-TM/ns3-bmv2
 
 ## introduction for simple-p4-qdisc.cc
 
@@ -34,11 +50,6 @@ The switch is controlled by the p4 program, which implements the probability of 
 
 P4 will control the switch's virtual queue, which corresponds to the setting of some relevant parameters.
 
-* Data tracing(Data is relatively small and difficult to draw @todo):
-  * the pkts length in Traffic Control device(virtual queue? @notsure) and switch channel device(real queue).
-  * time stamp.
-  * wheather the Traffic Control device or the switch drop the pkts.
-
 * Notes: In you root ns3 directory, these should be the Directory "./trace-data/" for saving the trace file "./trace-data/tc-qsize.txt", if not: these will be an error.
 
 ## introduction for simple-p4-qdisc.p4
@@ -62,9 +73,13 @@ This involves setting up and converting information in ns3 packages and p4 packa
 Therefore, a generic p4 program may not be fully applicable, at least for the current tests. This is also very unfortunate.
 So if we need new p4 function setting(@todo), for example add the queue ranking for different flow etc, the ns3 related module also need to make corresponding changes and setting.
 
+## `basic-qdisc-congestion.cc`
+
+The Push-In First-Out Queue (PIFO) is a priority queue data structure that allows packets to be "pushed" (enqueued) into an arbitrary location in the queue, but only dequeued from the head. PIFOs enable programmable packet scheduling: by programming how each packet's location in the PIFO is computed as it arrives, PIFOs allow network operators to express a wide variety of practical schedulers. Further, PIFOs are feasible in hardware at the high clock rates (1 GHz) typical of high-end switches today.
+
+
 
 # `ns4` with `p4simulator`: 
-
 
 The simulator set a `p4 Model` class for set p4 parameters, we instantiate one `P4 Model` using a json file compiled from P4 file. 
 Also start the thrift to communicate with the controller.
@@ -80,7 +95,9 @@ So `ns4` differs from `PIFO-TM/ns3-bmv2`, which does not save the metadata in th
 
 * src: [p4-topo-test.cc](https://github.com/Mingyumaz/NS3-p4simulator-module/blob/master/examples/p4-topo-test.cc)
 
-The basic ethernet, ipv4, udp, tcp and arp protocols are implemented using the p4 language, and setted in the switch in network. 
+It is possible to complete the p4 program simulation without other "redundant" modules. Therefore, to use it, you need to configure the relevant module first.
+
+The basic `ethernet`, `ipv4`, `udp`, `tcp` and `arp` protocols are implemented using the p4 language, and setted in the switch in network. 
 In the examples, there is no processing for queues, etc.
 But with the old version of the p4.
 
