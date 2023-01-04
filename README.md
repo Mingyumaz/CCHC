@@ -26,21 +26,6 @@ This thesis is written in English. As for the timeline, I'm leaning towards thre
 [4] Lhamo O, Nguyen G T, Fitzek F H P. Virtual Queues for QoS Compliance of Haptic Data Streams in Teleoperation[J]. 2022.
 
 
-##  Some plans and ideas
-
-### About the simulator choose
-
-System: Ubuntu 20.04.5 LTS (Focal Fossa) in virtual box
-Hardware: CPU: i5-12400; MEM: 24GB;
-
-There are mainly two ways for emulation/simulation: 
-
-* Emulation: Using mininet with bmv2. It a proven solution, but the performance is poor.
-    * It more suit for test the network topo or configure.
-* Simulation: Using ns3 with P4 module, and the P4 module with push our configuration info into bmv2. Because of the simulation method, its probably possible to simulate the performance of Tifino.
-
-In order to achieve high performance, ns3 was chosen to be used.
-
 # Related papers or website
 
 ## Data plane programming/P4
@@ -60,9 +45,17 @@ For the related papers
 * Bosshart P, Daly D, Gibb G, et al. P4: Programming protocol-independent packet processors[J]. ACM SIGCOMM Computer Communication Review, 2014, 44(3): 87-95.
 
 ## simulator
+
 * Bai J, Bi J, Kuang P, et al. NS4: Enabling programmable data plane simulation[C]//Proceedings of the Symposium on SDN Research. 2018: 1-7.
 * [Github-NS4-P4Simulator](https://github.com/P4Simulator/P4Simulator)
 * [Github-PIFO-TM/ns3-bmv2](https://github.com/PIFO-TM/ns3-bmv2)
+* 
+### About the simulator choose
+
+System: Ubuntu 20.04.5 LTS (Focal Fossa) in virtual box
+Hardware: CPU: i5-12400; MEM: 24GB;
+
+In order to achieve high performance, `ns3` with [Github-PIFO-TM/ns3-bmv2](https://github.com/PIFO-TM/ns3-bmv2) was chosen to be used. 
 
 ## traditional traffic control algorithm
 
