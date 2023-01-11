@@ -88,6 +88,10 @@ List of CRASHed tests:
 
 
 ./test.py --suite=pifo-tree-queue-disc
+
+
+./waf --command-template="%s --ns3::ConfigStore::Filename=p4-config.xml --ns3::ConfigStore::Mode=Save --ns3::ConfigStore::FileFormat=Xml" --run scratch/scratch-p4-test
+
 ```
 
 ## gdb
@@ -97,4 +101,17 @@ set print pretty on
 p *(NetDevice *) 0x55555559ec20
 
 export NS_LOG='PifoQueueDisc=function'
+
+// flow table command error
+
+Num     Type           Disp Enb Address            What
+8       breakpoint     keep y   0x00007ffff7f08f4c in ns3::P4SwitchInterface::ParsePopulateFlowTableCommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) at ../src/p4simulator/model/p4-switch-interface.cc:583
+        breakpoint already hit 3 times
+9       breakpoint     keep y   0x00007ffff7f094d2 in ns3::P4SwitchInterface::ParsePopulateFlowTableCommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) at ../src/p4simulator/model/p4-switch-interface.cc:650
+        breakpoint already hit 3 times
+10      breakpoint     keep y   0x00007ffff7f09574 in ns3::P4SwitchInterface::ParsePopulateFlowTableCommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) at ../src/p4simulator/model/p4-switch-interface.cc:660
+        breakpoint already hit 1 time
+
+
+
 ```
